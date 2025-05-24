@@ -5,10 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
+
+import huffman.HuffmanCodingCharacter;
 
 public class AudioSteganography {
 
@@ -187,12 +191,17 @@ public class AudioSteganography {
     }
 
     public static void main(String[] args) throws IOException {
-        String cheminFichierWav = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\data-v3\\son\\output.wav";
-        String cheminFichierIndices = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\data-v3\\son\\indices_audio.txt";
-
+        String cheminFichierWav = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\keyboard_coded.wav";
+        String cheminFichierIndices = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\indices.txt";
+        String texteReference = new String(Files.readAllBytes(Paths.get("C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\text.txt")), "UTF-8");
+    
         List<Integer> indices = chargerIndices(cheminFichierIndices);
-
+        Map.Entry<String, Map<Character, String>> refResult = HuffmanCodingCharacter.encoder(texteReference);
+        Map<Character, String> table = refResult.getValue();
+        HuffmanCodingCharacter.afficherTableCodage(table);
         String bits = AudioSteganography.extraireMessage(cheminFichierWav, indices);
+        String messageAudio = HuffmanCodingCharacter.decoder(bits, table);
+            System.out.println("Message extrait de l'Audio : " + messageAudio);
     }
 
 }

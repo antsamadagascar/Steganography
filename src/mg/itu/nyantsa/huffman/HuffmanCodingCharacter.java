@@ -29,13 +29,11 @@ public class HuffmanCodingCharacter {
         }
         
         @Override
-        public int compareTo(HuffmanNode autre) {
-            return this.frequence - autre.frequence;
-        }
+        public int compareTo(HuffmanNode autre) 
+        {    return this.frequence - autre.frequence; }
         
-        public boolean estFeuille() {
-            return gauche == null && droite == null;
-        }
+        public boolean estFeuille() 
+        {   return gauche == null && droite == null; }
     }
     
     /**
