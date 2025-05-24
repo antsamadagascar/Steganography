@@ -1,4 +1,4 @@
-package mg.itu.nyantsa.huffman;
+package huffman;
 
 import java.util.*;
 
