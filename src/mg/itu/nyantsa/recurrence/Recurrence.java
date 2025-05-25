@@ -1,11 +1,15 @@
 package recurrence;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import steganography.AudioSteganography;
+import steganography.ImageSteganography;
 
 public class Recurrence {
     
@@ -82,7 +86,7 @@ public class Recurrence {
                 return false;
             }
         }
-        System.out.println("✓ Tous les indices sont en ordre croissant");
+    //    System.out.println("Tous les indices sont en ordre croissant");
         return true;
     }
 
@@ -111,46 +115,9 @@ public class Recurrence {
                 writer.write(index.toString());
                 writer.newLine();
             }
-            System.out.println("Indices sauvegardés dans le fichier : " + filePath);
         } catch (IOException e) {
             System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
         }
     }
- 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Entrez a : ");
-        long a = scanner.nextLong();
-    
-        System.out.print("Entrez b : ");
-        long b = scanner.nextLong();
-    
-        System.out.print("Entrez m (modulo) : ");
-        long m = scanner.nextLong();
-    
-        System.out.print("Entrez U0 (valeur initiale) : ");
-        long U0 = scanner.nextLong();
-    
-        System.out.print("Entrez la longueur du message : ");
-        int messageLength = scanner.nextInt();
-    
-        System.out.print("Entrez la taille maximale (maxSize) : ");
-        long maxSize = scanner.nextLong();
-    
-        System.out.print("Entrez le nom du fichier de sortie : ");
-        String fileName = scanner.next();
-    
-        Recurrence rec = new Recurrence(a, b, m, U0);
-        List<Long> indices = rec.generateIndicesWithWrap(messageLength, maxSize);
-        System.out.println("indices :" + indices);
-        
-        boolean isValid = rec.checkIndicesOrder(indices);
-        if (!isValid) {
-            System.out.println("PROBLÈME DÉTECTÉ: Les indices ne sont pas en ordre croissant!");
-        }
-        
-         rec.saveIndicesToFile(indices, fileName);
-        scanner.close();
-    }
 }

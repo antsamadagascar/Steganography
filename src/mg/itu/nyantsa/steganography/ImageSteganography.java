@@ -80,7 +80,7 @@ public class ImageSteganography {
         List<Integer> bits = new ArrayList<>();
         StringBuilder messageBinaire = new StringBuilder();
     
-        System.out.println("Indices : " + pixelsIndices);
+       // System.out.println("Indices : " + pixelsIndices);
     
 
         for (int index : pixelsIndices) {
@@ -100,9 +100,9 @@ public class ImageSteganography {
             messageBinaire.append(bit);
         }
     
-        System.out.println("Sample: " + graySamples);
-        System.out.println("Bits: " + bits);
-        System.out.println("bitsPerPixel:" + bitsPerPixel);
+        // System.out.println("Sample: " + graySamples);
+        // System.out.println("Bits: " + bits);
+        // System.out.println("bitsPerPixel:" + bitsPerPixel);
     
         return messageBinaire.toString();
     }
@@ -132,11 +132,11 @@ public class ImageSteganography {
     
         long totalBits = (long) largeur * hauteur * bitsPerSample * numBands;
     
-        System.out.println("Largeur : " + largeur);
-        System.out.println("Hauteur : " + hauteur);
-        System.out.println("Bits par échantillon : " + bitsPerSample);
-        System.out.println("Nombre de bandes : " + numBands);
-        System.out.println("Capacité totale (bits) : " + totalBits);
+        // System.out.println("Largeur : " + largeur);
+        // System.out.println("Hauteur : " + hauteur);
+        // System.out.println("Bits par échantillon : " + bitsPerSample);
+        // System.out.println("Nombre de bandes : " + numBands);
+        // System.out.println("Capacité totale (bits) : " + totalBits);
     
         return totalBits;
     }
