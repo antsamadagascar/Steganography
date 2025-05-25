@@ -180,13 +180,13 @@ public class AudioSteganography {
             boolean isBigEndian = format.isBigEndian();
             AudioFormat.Encoding encoding = format.getEncoding();
     
-            System.out.println("Format audio : " + encoding);
-            System.out.println("Sample rate : " + sampleRate + " Hz");
-            System.out.println("Sample size : " + sampleSizeInBits + " bits");
-            System.out.println("Channels : " + channels);
-            System.out.println("Frames : " + frames);
-            System.out.println("Bytes per frame : " + bytesPerFrame);
-            System.out.println("Endian : " + (isBigEndian ? "Big-endian" : "Little-endian"));
+            // System.out.println("Format audio : " + encoding);
+            // System.out.println("Sample rate : " + sampleRate + " Hz");
+            // System.out.println("Sample size : " + sampleSizeInBits + " bits");
+            // System.out.println("Channels : " + channels);
+            // System.out.println("Frames : " + frames);
+            // System.out.println("Bytes per frame : " + bytesPerFrame);
+            // System.out.println("Endian : " + (isBigEndian ? "Big-endian" : "Little-endian"));
     
             if (bytesPerFrame <= 0) {
                 throw new IOException("Format audio non supporté");
@@ -222,8 +222,7 @@ public class AudioSteganography {
 
          String bits = AudioSteganography.extraireMessage(cheminFichierWav, indices);
             System.out.println("Message binaire extrait audio: " +bits);
-        //String messageAudio = HuffmanCodingCharacter.decoder(bits, table);
-        //   System.out.println("Message extrait de l'Audio : " + messageAudio);
+ 
     }
 
 }
