@@ -1,5 +1,8 @@
 package huffman;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -171,6 +174,7 @@ public class HuffmanCodingCharacter {
      * @param tableCodage La table de correspondance entre caractères et codes
      * @return Le texte décodé (normalisé : minuscules, lettres et espaces)
      */
+    //  on donnes a et b et modulo et u0 ,longeuer bites message cacher,*/
     public static String decoder(String texteCodé, Map<Character, String> tableCodage) {
         // Inverser la table de codage
         Map<String, Character> tableDecodage = new HashMap<>();
@@ -385,19 +389,16 @@ public class HuffmanCodingCharacter {
     }
 
     
-    public static void main(String[] args) {
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
-        
-        System.out.println("=== CODAGE DE HUFFMAN ===");
-        System.out.print("Entrez le texte à encoder : ");
-        String texte = scanner.nextLine();
+    public static void main(String[] args) throws IOException {
+        String cheminFichier = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\data-test-nyantsa\\texte.txt";
+
+        String texte = new String(Files.readAllBytes(Paths.get(cheminFichier)));
 
         Map.Entry<String, Map<Character, String>> resultat = HuffmanCodingCharacter.encoder(texte);
         Map<Character, String> tableCodage = resultat.getValue();
-        //analyserCodeHuffman(texte,tableCodage);
+        analyserCodeHuffman(texte,tableCodage);
         
         afficherTableCodage(tableCodage);
         
-        scanner.close();
     }
 }

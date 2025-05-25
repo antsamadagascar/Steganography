@@ -2,6 +2,8 @@ package steganography;
 
 import huffman.HuffmanCodingCharacter;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,8 +28,14 @@ public class ImageSteganography {
         }
 
         BufferedImage image = ImageIO.read(new File(imagePath));
+
+        if (image.getType() != BufferedImage.TYPE_BYTE_GRAY) {
+            throw new IllegalArgumentException("L'image doit être en niveaux de gris (TYPE_BYTE_GRAY)");
+        }
+
         int largeur = image.getWidth();
         int hauteur = image.getHeight();
+        WritableRaster raster = image.getRaster();
 
         for (int index : pixelsIndices) {
             int x = index % largeur;
@@ -43,71 +51,60 @@ public class ImageSteganography {
             int x = index % largeur;
             int y = index / largeur;
 
-            int rgb = image.getRGB(x, y);
-
-            int alpha = (rgb >> 24) & 0xFF;
-            int rgbSansAlpha = rgb & 0x00FFFFFF;
-
+            int gray = raster.getSample(x, y, 0);
             int bit = message.charAt(i) == '1' ? 1 : 0;
+            int newGray = (gray & 0xFE) | bit;
 
-            int alphaModifie = (alpha & 0xFE) | bit;
-
-            int rgbModifie = (alphaModifie << 24) | rgbSansAlpha;
-
-            image.setRGB(x, y, rgbModifie);
+            raster.setSample(x, y, 0, newGray);
             pixelsModifies.add(index);
         }
 
         ImageIO.write(image, "png", new File(outputPath));
-
         return pixelsModifies;
     }
 
+
     public static String extraireMessage(String imagePath, List<Integer> pixelsIndices) throws IOException {
         BufferedImage image = ImageIO.read(new File(imagePath));
-        int largeur = image.getWidth();
-        int hauteur = image.getHeight();
     
-        for (int index : pixelsIndices) {
-            int x = index % largeur;
-            int y = index / largeur;
-            if (x >= largeur || y >= hauteur) {
-                throw new IllegalArgumentException("Indice de pixel invalide: " + index);
-            }
+        if (image.getType() != BufferedImage.TYPE_BYTE_GRAY) {
+            throw new IllegalArgumentException("L'image doit être en niveaux de gris (TYPE_BYTE_GRAY)");
         }
     
-        StringBuilder message = new StringBuilder();
-        List<Integer> alphaValues = new ArrayList<>();
+        Raster raster = image.getRaster();
+        int largeur = image.getWidth();
+        int hauteur = image.getHeight();
+        int bitsPerPixel = raster.getSampleModel().getSampleSize(0);
+    
+        List<Integer> graySamples = new ArrayList<>();
+        List<Integer> bits = new ArrayList<>();
+        StringBuilder messageBinaire = new StringBuilder();
     
         System.out.println("Indices : " + pixelsIndices);
     
+
         for (int index : pixelsIndices) {
+      //     if (index == 0) continue;  // saute l'indice 0
             int x = index % largeur;
             int y = index / largeur;
     
-            int rgb = image.getRGB(x, y);
-            int alpha = (rgb >> 24) & 0xFF;
-            alphaValues.add(alpha);
-    
-            int bit = alpha & 1;
-            message.append(bit);
-        }
-        System.out.println("Sample: " + alphaValues);
-    
-        String binaryMessage = message.toString();
-    
-        StringBuilder bitsAvecCrochets = new StringBuilder("[");
-        for (int i = 0; i < binaryMessage.length(); i++) {
-            bitsAvecCrochets.append(binaryMessage.charAt(i));
-            if (i != binaryMessage.length() - 1) {
-                bitsAvecCrochets.append(", ");
+            if (x >= largeur || y >= hauteur) {
+                throw new IllegalArgumentException("Indice de pixel invalide: " + index);
             }
+    
+            int gray = raster.getSample(x, y, 0);
+            int bit = gray & 1;
+    
+            graySamples.add(gray);
+            bits.add(bit);
+            messageBinaire.append(bit);
         }
-        bitsAvecCrochets.append("]");
     
-        System.out.println("Bits: " + bitsAvecCrochets.toString());
+        System.out.println("Sample: " + graySamples);
+        System.out.println("Bits: " + bits);
+        System.out.println("bitsPerPixel:" + bitsPerPixel);
     
-        return binaryMessage;
+        return messageBinaire.toString();
     }
     
     public static List<Integer> lireIndicesDepuisFichier(String fichierPath) throws IOException {
@@ -124,21 +121,41 @@ public class ImageSteganography {
         return indices;
     }
 
+    public static long getImageCapacityInBits(String imagePath) throws IOException {
+        BufferedImage image = ImageIO.read(new File(imagePath));
+        Raster raster = image.getRaster();
+        int largeur = image.getWidth();
+        int hauteur = image.getHeight();
+    
+        int bitsPerSample = raster.getSampleModel().getSampleSize(0);
+        int numBands = raster.getNumBands();
+    
+        long totalBits = (long) largeur * hauteur * bitsPerSample * numBands;
+    
+        System.out.println("Largeur : " + largeur);
+        System.out.println("Hauteur : " + hauteur);
+        System.out.println("Bits par échantillon : " + bitsPerSample);
+        System.out.println("Nombre de bandes : " + numBands);
+        System.out.println("Capacité totale (bits) : " + totalBits);
+    
+        return totalBits;
+    }
+    
     public static void main(String[] args) {
         try {
-            String imagePath = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\image_coded.png";
-    
-            String fichierIndices = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\indices.txt";
+            String imagePath = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\data-test-tendry\\la_lune_est_belle_67_1011000100110111101000010100101010110100100111101110101101110110101.png";
+            //getImageCapacityInBits(imagePath);
+            String fichierIndices = "C:\\Users\\Ny Antsa\\Documents\\Fianarana\\semestre6\\Mr Tsinjo\\final-exam-codage\\tete2.txt";
             List<Integer> pixelsIndices = lireIndicesDepuisFichier(fichierIndices);
     
             String binaryMessage = extraireMessage(imagePath, pixelsIndices);
-    
-            String texteReference = new String(Files.readAllBytes(Paths.get("C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\text.txt")), "UTF-8");
-    
-            Map.Entry<String, Map<Character, String>> refResult = HuffmanCodingCharacter.encoder(texteReference);
-            Map<Character, String> table = refResult.getValue();
-            String messageImage = HuffmanCodingCharacter.decoder(binaryMessage, table);
-            System.out.println("Message extrait de l'image : " + messageImage);
+                System.out.println("Message binaire extrait de l'image : " + binaryMessage);
+
+            /// String texteReference = new String(Files.readAllBytes(Paths.get("C:\\Users\\Ny Antsa\\Downloads\\data\\text")), "UTF-8");
+            // Map.Entry<String, Map<Character, String>> refResult = HuffmanCodingCharacter.encoder(texteReference);
+            // Map<Character, String> table = refResult.getValue();
+            //String messageTexte = HuffmanCodingCharacter.decoder(binaryMessage, table);
+            //  System.out.println("Message texte extrait de l'image : " + messageTexte);
     
         } catch (IOException e) {
             System.err.println("Erreur lors de la lecture de l'image : " + e.getMessage());
