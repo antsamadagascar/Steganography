@@ -122,6 +122,8 @@ public class AudioSteganography {
             List<Integer> samples = new ArrayList<>();
     
             for (int index : indices) {
+                // if (index == 0) continue; // sauter l'indice 0
+
                 int sampleIndex = index * bytesPerSample;
                 int sampleValue;
                 if (bitsPerSample == 8) {
@@ -171,15 +173,33 @@ public class AudioSteganography {
         try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audioPath))) {
             AudioFormat format = audioInputStream.getFormat();
             long frames = audioInputStream.getFrameLength();
+            int channels = format.getChannels();
+            float sampleRate = format.getSampleRate();
+            int sampleSizeInBits = format.getSampleSizeInBits();
             int bytesPerFrame = format.getFrameSize();
+            boolean isBigEndian = format.isBigEndian();
+            AudioFormat.Encoding encoding = format.getEncoding();
+    
+            System.out.println("Format audio : " + encoding);
+            System.out.println("Sample rate : " + sampleRate + " Hz");
+            System.out.println("Sample size : " + sampleSizeInBits + " bits");
+            System.out.println("Channels : " + channels);
+            System.out.println("Frames : " + frames);
+            System.out.println("Bytes per frame : " + bytesPerFrame);
+            System.out.println("Endian : " + (isBigEndian ? "Big-endian" : "Little-endian"));
+    
             if (bytesPerFrame <= 0) {
                 throw new IOException("Format audio non supporté");
             }
-            return frames * format.getChannels();
+    
+            long totalSamples = frames * channels;
+            System.out.println("Total samples : " + totalSamples);
+            return totalSamples;
         } catch (UnsupportedAudioFileException e) {
             throw new IOException("Fichier audio non supporté", e);
         }
-    } 
+    }
+    
 
     private static List<Integer> chargerIndices(String chemin) throws IOException {
         List<String> lignes = Files.readAllLines(Paths.get(chemin));
@@ -191,17 +211,19 @@ public class AudioSteganography {
     }
 
     public static void main(String[] args) throws IOException {
-        String cheminFichierWav = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\keyboard_coded.wav";
-        String cheminFichierIndices = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\indices.txt";
-        String texteReference = new String(Files.readAllBytes(Paths.get("C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\text.txt")), "UTF-8");
+        String cheminFichierWav = "C:\\Users\\Ny Antsa\\Downloads\\data\\a_4_0001.wav";
+        String cheminFichierIndices = "C:\\Users\\Ny Antsa\\Documents\\Fianarana\\semestre6\\Mr Tsinjo\\final-exam-codage\\indices_audio.txt";
+       // getSampleCount(cheminFichierWav);
+        // String texteReference = new String(Files.readAllBytes(Paths.get("C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\text.txt")), "UTF-8");
     
         List<Integer> indices = chargerIndices(cheminFichierIndices);
-        Map.Entry<String, Map<Character, String>> refResult = HuffmanCodingCharacter.encoder(texteReference);
-        Map<Character, String> table = refResult.getValue();
-     //   HuffmanCodingCharacter.afficherTableCodage(table);
-        String bits = AudioSteganography.extraireMessage(cheminFichierWav, indices);
-        String messageAudio = HuffmanCodingCharacter.decoder(bits, table);
-            System.out.println("Message extrait de l'Audio : " + messageAudio);
+        // Map.Entry<String, Map<Character, String>> refResult = HuffmanCodingCharacter.encoder(texteReference);
+        // Map<Character, String> table = refResult.getValue();
+
+         String bits = AudioSteganography.extraireMessage(cheminFichierWav, indices);
+            System.out.println("Message binaire extrait audio: " +bits);
+        //String messageAudio = HuffmanCodingCharacter.decoder(bits, table);
+        //   System.out.println("Message extrait de l'Audio : " + messageAudio);
     }
 
 }

@@ -116,10 +116,10 @@ public class Recurrence {
             System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
         }
     }
-
+ 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-    
+
         System.out.print("Entrez a : ");
         long a = scanner.nextLong();
     
@@ -150,7 +150,7 @@ public class Recurrence {
             System.out.println("PROBLÈME DÉTECTÉ: Les indices ne sont pas en ordre croissant!");
         }
         
-        // rec.saveIndicesToFile(indices, fileName);
+         rec.saveIndicesToFile(indices, fileName);
         scanner.close();
     }
 }
