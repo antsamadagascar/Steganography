@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Recurrence {
     
@@ -103,10 +104,36 @@ public class Recurrence {
             System.err.println("Erreur lors de l'écriture du fichier : " + e.getMessage());
         }
     }
+
     public static void main(String[] args) {
-        Recurrence rec1 = new Recurrence(1, 1, 4294967296L, 1);
-        List<Long> indices = rec1.generateIndicesWithWrap(10, 5000);
-        rec1.saveIndicesToFile(indices, "indices.txt");
+        Scanner scanner = new Scanner(System.in);
+    
+        System.out.print("Entrez a : ");
+        long a = scanner.nextLong();
+    
+        System.out.print("Entrez b : ");
+        long b = scanner.nextLong();
+    
+        System.out.print("Entrez m (modulo) : ");
+        long m = scanner.nextLong();
+    
+        System.out.print("Entrez U0 (valeur initiale) : ");
+        long U0 = scanner.nextLong();
+    
+        System.out.print("Entrez la longueur du message : ");
+        int messageLength = scanner.nextInt();
+    
+        System.out.print("Entrez la taille maximale (maxSize) : ");
+        long maxSize = scanner.nextLong();
+    
+        System.out.print("Entrez le nom du fichier de sortie : ");
+        String fileName = scanner.next();
+    
+        Recurrence rec = new Recurrence(a, b, m, U0);
+        List<Long> indices = rec.generateIndicesWithWrap(messageLength, maxSize);
+        rec.saveIndicesToFile(indices, fileName);
+    
+        scanner.close();
     }
     
 }
