@@ -9,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.imageio.ImageIO;
 
 public class ImageSteganography {
@@ -127,14 +126,14 @@ public class ImageSteganography {
 
     public static void main(String[] args) {
         try {
-            String imagePath = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 4 - code-1\\image_coded.png";
+            String imagePath = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\image_coded.png";
     
-            String fichierIndices = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Seance 3 - code\\indices.txt";
+            String fichierIndices = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\indices.txt";
             List<Integer> pixelsIndices = lireIndicesDepuisFichier(fichierIndices);
     
             String binaryMessage = extraireMessage(imagePath, pixelsIndices);
     
-            String texteReference = new String(Files.readAllBytes(Paths.get("C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Seance 3 - code\\text.txt")), "UTF-8");
+            String texteReference = new String(Files.readAllBytes(Paths.get("C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\Séance 3 - code\\text.txt")), "UTF-8");
     
             Map.Entry<String, Map<Character, String>> refResult = HuffmanCodingCharacter.encoder(texteReference);
             Map<Character, String> table = refResult.getValue();

@@ -198,7 +198,7 @@ public class AudioSteganography {
         List<Integer> indices = chargerIndices(cheminFichierIndices);
         Map.Entry<String, Map<Character, String>> refResult = HuffmanCodingCharacter.encoder(texteReference);
         Map<Character, String> table = refResult.getValue();
-        HuffmanCodingCharacter.afficherTableCodage(table);
+     //   HuffmanCodingCharacter.afficherTableCodage(table);
         String bits = AudioSteganography.extraireMessage(cheminFichierWav, indices);
         String messageAudio = HuffmanCodingCharacter.decoder(bits, table);
             System.out.println("Message extrait de l'Audio : " + messageAudio);
