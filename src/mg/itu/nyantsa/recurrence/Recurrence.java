@@ -74,6 +74,18 @@ public class Recurrence {
         return indices;
     }
 
+    public boolean checkIndicesOrder(List<Long> indices) {
+        for (int i = 1; i < indices.size(); i++) {
+            if (indices.get(i) <= indices.get(i-1)) {
+                System.out.println("ATTENTION: Indice " + indices.get(i) + 
+                                 " à la position " + i + " <= " + indices.get(i-1));
+                return false;
+            }
+        }
+        System.out.println("✓ Tous les indices sont en ordre croissant");
+        return true;
+    }
+
     public void displayGeneration(int messageLength) {
         List<Long> sequence = generateSequence(messageLength);
         List<Long> indices = generateIndices(messageLength);
@@ -131,9 +143,14 @@ public class Recurrence {
     
         Recurrence rec = new Recurrence(a, b, m, U0);
         List<Long> indices = rec.generateIndicesWithWrap(messageLength, maxSize);
-        rec.saveIndicesToFile(indices, fileName);
-    
+        System.out.println("indices :" + indices);
+        
+        boolean isValid = rec.checkIndicesOrder(indices);
+        if (!isValid) {
+            System.out.println("PROBLÈME DÉTECTÉ: Les indices ne sont pas en ordre croissant!");
+        }
+        
+        // rec.saveIndicesToFile(indices, fileName);
         scanner.close();
     }
-    
 }
