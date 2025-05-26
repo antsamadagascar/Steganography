@@ -7,6 +7,7 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Scanner;
 
 public class HuffmanCodingCharacter {
     /**
@@ -390,15 +391,17 @@ public class HuffmanCodingCharacter {
 
     
     public static void main(String[] args) throws IOException {
-        String cheminFichier = "C:\\Users\\Ny Antsa\\Documents\\CODAGE\\HUFFMAN\\data\\data-test-nyantsa\\texte.txt";
-
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Entrez le chemin du fichier : ");
+        String cheminFichier = scanner.nextLine();
+        scanner.close();
+    
         String texte = new String(Files.readAllBytes(Paths.get(cheminFichier)));
-
+    
         Map.Entry<String, Map<Character, String>> resultat = HuffmanCodingCharacter.encoder(texte);
         Map<Character, String> tableCodage = resultat.getValue();
-        analyserCodeHuffman(texte,tableCodage);
-        
+        analyserCodeHuffman(texte, tableCodage);
+    
         afficherTableCodage(tableCodage);
-        
     }
 }

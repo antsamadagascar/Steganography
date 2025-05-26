@@ -1,5 +1,6 @@
 package main;
 
+import huffman.HuffmanCodingCharacter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,11 +8,9 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
 import recurrence.Recurrence;
 import steganography.AudioSteganography;
 import steganography.ImageSteganography;
-import huffman.HuffmanCodingCharacter;
 
 public class Main {
     private static final String RESET = "\033[0m";
@@ -53,6 +52,7 @@ public class Main {
     }
 
     private static void runApplication() {
+        
         while (true) {
             try {
                 // Sélection du type de média
@@ -107,7 +107,7 @@ public class Main {
         
         System.out.println(BLUE + "Conseils :");
         System.out.println("   Utilisez un chemin complet (ex: C:\\dossier\\fichier.png)");
-        System.out.println("     Vérifiez que le fichier existe et est accessible" + RESET);
+        System.out.println("   Vérifiez que le fichier existe et est accessible" + RESET);
         System.out.println();
         
         System.out.print(CYAN + "Chemin du fichier " + mediaType + " : " + RESET);
@@ -157,7 +157,7 @@ public class Main {
     }
 
     private static RecurrenceParams getRecurrenceParams() {
-        showSection("PARAMÈTRES DE RÉCURRENCE");
+        showSection("PARAMÈTRES DE RÉCURRENCE BASE SUR VOTRE ETU:XXXX");
         System.out.println(BLUE + "Configuration de la suite Un+1 = (a×Un + b) mod m" + RESET);
         System.out.println();
 
