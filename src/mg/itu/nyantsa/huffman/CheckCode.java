@@ -143,32 +143,117 @@ public class CheckCode {
         return language.stream().mapToInt(String::length).max().orElse(0);
     }
     
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("=== Test de code préfixe/suffixe/etc. ===");
-        System.out.println("Entrez les mots du langage séparés par des espaces (ou 'quit' pour quitter) :");
-    
-        while (true) {
-            System.out.print("> ");
-            String input = scanner.nextLine().trim();
-    
-            if (input.equalsIgnoreCase("quit")) {
-                break;
-            }
-    
-            Set<String> customL = input.isEmpty() ? new HashSet<>() : new HashSet<>(Arrays.asList(input.split("\\s+")));
-    
-            System.out.print("L = { ");
-            System.out.print(String.join(", ", customL));
-            System.out.println(" }");
-    
-            boolean result = isCode(customL);
-            System.out.println("Résultat : " + (result ? "Code" : "Pas un code"));
-            System.out.println();
+    /**
+     * Teste un langage et affiche le résultat
+     */
+    private static void testLanguage(String name, Set<String> language) {
+        System.out.println("\n" + "=".repeat(50));
+        System.out.println("Test: " + name);
+        System.out.print("L = { ");
+        if (language.isEmpty()) {
+            System.out.print("∅");
+        } else {
+            System.out.print("\"" + String.join("\", \"", language) + "\"");
         }
-    
-        scanner.close();
-        System.out.println("Programme terminé.");
+        System.out.println(" }");
+        System.out.println("-".repeat(30));
+        
+        boolean result = isCode(language);
+        System.out.println("\n>>> RÉSULTAT: " + (result ? " CODE" : " PAS UN CODE"));
     }
     
+    /**
+     * Exécute tous les tests prédéfinis
+     */
+    private static void runPredefinedTests() {
+        System.out.println("🧪 TESTS PRÉDÉFINIS");
+        
+        // Test 1: Code préfixe simple
+        testLanguage("Code préfixe simple", 
+                    new HashSet<>(Arrays.asList("a", "bb", "cc")));
+        
+        // Test 2: Pas un code préfixe
+        testLanguage("Pas un code préfixe", 
+                    new HashSet<>(Arrays.asList("a", "ab", "b")));
+        
+        // Test 3: Code binaire classique
+        testLanguage("Code binaire", 
+                    new HashSet<>(Arrays.asList("0", "10", "11")));
+        
+        // Test 4: Avec double factorisation
+        testLanguage("Double factorisation", 
+                    new HashSet<>(Arrays.asList("ab", "ba", "abb", "a")));
+        
+        // Test 5: Langage vide
+        testLanguage("Langage vide", new HashSet<>());
+        
+        // Test 6: Avec mot vide
+        testLanguage("Avec mot vide", 
+                    new HashSet<>(Arrays.asList("", "a", "b")));
+        
+        // Test 7: Code Huffman typique
+        testLanguage("Code Huffman", 
+                    new HashSet<>(Arrays.asList("00", "01", "10", "110", "111")));
+        
+        // Test 8: Un seul mot
+        testLanguage("Un seul mot", 
+                    new HashSet<>(Arrays.asList("hello")));
+    }
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("╔══════════════════════════════════════════════════════════╗");
+        System.out.println("║              VÉRIFICATEUR DE CODES                       ║");
+        System.out.println("║         (Codes préfixes et codes généraux)               ║");
+        System.out.println("╚══════════════════════════════════════════════════════════╝");
+        
+        while (true) {
+            System.out.println("\nChoisissez une option:");
+            System.out.println("1.  Exécuter les tests prédéfinis");
+            System.out.println("2.  Tester un langage personnalisé");
+            System.out.println("3.  Voir les exemples rapides");
+            System.out.println("4.  Quitter");
+            System.out.print("\nVotre choix (1-4): ");
+            
+            String choice = scanner.nextLine().trim();
+            
+            switch (choice) {
+                case "1":
+                    runPredefinedTests();
+                    break;
+                    
+                case "2":
+                    System.out.println("\n Mode test personnalisé");
+                    System.out.println("Entrez les mots du langage séparés par des espaces:");
+                    System.out.println("(Exemples: 'a b c' ou '0 10 11' ou '' pour langage vide)");
+                    System.out.print("> ");
+                    
+                    String input = scanner.nextLine().trim();
+                    Set<String> customL = input.isEmpty() ? 
+                        new HashSet<>() : 
+                        new HashSet<>(Arrays.asList(input.split("\\s+")));
+                    
+                    testLanguage("Langage personnalisé", customL);
+                    break;
+                    
+                case "3":
+                    System.out.println("\n EXEMPLES RAPIDES À TESTER:");
+                    System.out.println(" Code préfixe: 'a bb cc'");
+                    System.out.println(" Pas préfixe: 'a ab b'");
+                    System.out.println(" Code binaire: '0 10 11'");
+                    System.out.println(" Problématique: 'ab ba abb a'");
+                    System.out.println(" Huffman: '00 01 10 110 111'");
+                    break;
+                    
+                case "4":
+                    System.out.println("\n Au revoir Ny Antsa!");
+                    scanner.close();
+                    return;
+                    
+                default:
+                    System.out.println(" Choix invalide. Veuillez entrer 1, 2, 3 ou 4.");
+            }
+        }
+    }
 }
