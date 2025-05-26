@@ -5,14 +5,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
-import huffman.HuffmanCodingCharacter;
 
 public class AudioSteganography {
 
@@ -122,7 +118,7 @@ public class AudioSteganography {
             List<Integer> samples = new ArrayList<>();
     
             for (int index : indices) {
-                // if (index == 0) continue; // sauter l'indice 0
+                 if (index == 0) continue; // sauter l'indice 0
 
                 int sampleIndex = index * bytesPerSample;
                 int sampleValue;
