@@ -1,5 +1,6 @@
 package huffman;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -7,6 +8,7 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class HuffmanCodingCharacter {
@@ -389,7 +391,25 @@ public class HuffmanCodingCharacter {
         }
     }
 
+    public static Map<Character, String> lireTableHuffman() throws IOException {
+        String cheminRelatif = "src/mg/itu/nyantsa/config/config.properties";
+        String cheminAbsolu = Paths.get(cheminRelatif).toAbsolutePath().toString();
     
+        Properties properties = new Properties();
+        properties.load(new FileInputStream(cheminAbsolu));
+    
+        Map<Character, String> tableCodage = new HashMap<>();
+        for (String key : properties.stringPropertyNames()) {
+            if (key.length() == 1) {
+                char caractere = key.charAt(0);
+                String code = properties.getProperty(key);
+                tableCodage.put(caractere, code);
+            }
+        }
+        return tableCodage;
+    }
+    
+
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Entrez le chemin du fichier : ");

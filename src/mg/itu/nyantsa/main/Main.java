@@ -3,8 +3,6 @@ package main;
 import huffman.HuffmanCodingCharacter;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -23,8 +21,7 @@ public class Main {
     private static final String PURPLE = "\033[35m";
     
     private static Scanner scanner = new Scanner(System.in);
-    private static final String basePath = "C:\\Users\\Ny Antsa\\Documents\\Fianarana\\semestre6\\Mr Tsinjo\\final-exam-codage\\src\\mg\\itu\\nyantsa\\data";
-
+    private static final String basePath ="src/mg/itu/nyantsa/data";
     public static void main(String[] args) {
         try {
             showWelcomeBanner();
@@ -286,27 +283,11 @@ public class Main {
 
     private static void performHuffmanDecoding(String binaryMessage) {
         showSection(" DÉCODAGE HUFFMAN");
-        
-        System.out.print(CYAN + " Chemin du fichier texte de référence : " + RESET);
-        String referencePath = scanner.nextLine().trim();
-
-        if (referencePath.isEmpty()) {
-            showError("Chemin vide", "Chemin de fichier requis pour le décodage Huffman");
-            return;
-        }
-
-        File refFile = new File(referencePath);
-        if (!refFile.exists()) {
-            showError("Fichier introuvable", "Le fichier de référence n'existe pas");
-            return;
-        }
 
         showProgress("Décodage Huffman en cours...");
 
         try {
-            String referenceText = new String(Files.readAllBytes(Paths.get(referencePath)), "UTF-8");
-            Map.Entry<String, Map<Character, String>> refResult = HuffmanCodingCharacter.encoder(referenceText);
-            Map<Character, String> table = refResult.getValue();
+            Map<Character, String> table = HuffmanCodingCharacter.lireTableHuffman();
 
             String decodedMessage = HuffmanCodingCharacter.decoder(binaryMessage, table);
             
@@ -326,8 +307,6 @@ public class Main {
             
             System.out.println("╚" + "═".repeat(Math.min(decodedMessage.length() + 2, 78)) + "╝" + RESET);
 
-        } catch (IOException e) {
-            showError("Erreur de lecture", "Impossible de lire le fichier de référence : " + e.getMessage());
         } catch (Exception e) {
             showError("Erreur de décodage", "Échec du décodage Huffman : " + e.getMessage());
         }
