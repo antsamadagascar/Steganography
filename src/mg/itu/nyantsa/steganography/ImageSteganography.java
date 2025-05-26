@@ -1,6 +1,5 @@
 package steganography;
 
-import huffman.HuffmanCodingCharacter;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
@@ -10,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.imageio.ImageIO;
 
 public class ImageSteganography {
@@ -84,7 +82,7 @@ public class ImageSteganography {
     
 
         for (int index : pixelsIndices) {
-      //     if (index == 0) continue;  // saute l'indice 0
+            if (index == 0) continue;  // saute l'indice 0
             int x = index % largeur;
             int y = index / largeur;
     
