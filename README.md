@@ -1,70 +1,91 @@
-# 🧪 Projet d'Examen Final – Codage Huffman et Décodage de Message Caché
+# 🔐 Système de Stéganographie avec Codage Huffman
 
-## 🎯 Objectif
+## 🎯 Vue d'ensemble
 
-Processus du projet  :
-- Générer un texte à partir du numéro d’étudiant
-- Le compresser avec Huffman
-- Identifier le langage du code
-- Utiliser ce codage pour décoder un message caché dans une **image** et un **son**, en générant des indices à l’aide d’une suite pseudo-aléatoire à **saut**.
+Ce projet implémente un système complet de stéganographie utilisant le codage Huffman pour cacher et extraire des messages dans des médias numériques (images et audio). Le système combine compression de données, génération pseudo-aléatoire et techniques de dissimulation d'information.
 
 ---
 
-## ✅ Étapes du projet
+## 🔧 Fonctionnalités principales
+
+### 📊 Compression et Codage
+- **Génération de texte personnalisé** basée sur l'identifiant utilisateur
+- **Codage Huffman optimal** avec construction d'arbre binaire
+- **Validation automatique** du code préfixe (sans ambiguïté)
+- **Détection de langage** parmi plusieurs propositions pour optimiser le décodage
+
+### 🎲 Génération pseudo-aléatoire
+- **Suite à saut configurable** : `Uₙ = (a × Uₙ₋₁ + b) mod m`
+- **Paramètres dynamiques** (a, b, m) générés selon l'identifiant
+- **Indices de position** calculés automatiquement pour l'extraction
+
+### 🖼️ Stéganographie dans les images
+- **Extraction LSB** (Least Significant Bit) des pixels
+- **Support multi-canaux** (RGB, RGBA)
+- **Navigation par indices** pour éviter la détection séquentielle
+- **Reconstruction binaire** complète du message caché
+
+### 🎧 Stéganographie dans l'audio
+- **Traitement des échantillons** audio numériques
+- **Extraction de bits** dans les données sonores
+- **Synchronisation temporelle** avec les indices générés
+- **Décodage temps réel** des messages cachés
+
+### 🔍 Système de décodage
+- **Table de Huffman inversée** pour la décompression
+- **Validation de cohérence** des messages extraits
+- **Support multi-formats** (texte, binaire)
+- **Gestion d'erreurs** intégrée
 
 ---
 
-### 🧩 Partie 1 : Codage Huffman
+## ⚙️ Architecture technique
 
-1. **Préparation**
-   - Vérifie le **numéro d’étudiant**:2754
-   - Génère :
-     - un **texte de base**
-     - les **valeurs `a` et `b`**
-     - une **valeur de modulo `m`**
+### Composants principaux
+1. **Générateur de texte** personnalisé
+2. **Encodeur/Décodeur Huffman** optimisé
+3. **Générateur d'indices** pseudo-aléatoires
+4. **Extracteur de stéganographie** multi-média
+5. **Système de validation** et vérification
 
-2. **Codage**
-   - Appliquer le **codage de Huffman** au texte
-   - Vérifier que le codage est valide (**code préfixe**, **sans ambiguïté**)
+### Algorithme de base
+```
+Initialisation → Génération texte → Codage Huffman → 
+Détection langage → Calcul indices → Extraction bits → 
+Décodage message → Validation résultat
+```
 
-3. **Langage**
-   - Identifier le **langage de codage** parmi 3 propositions
-   - Utiliser ce langage pour le décodage final
-
-4. **Préparation des indices**
-   - Utiliser la suite à saut :
-     ```
-     U₀ = 1
-     Uₙ = (a × Uₙ₋₁ + b) mod m
-     ```
-   - Interprétation :
-     - Chaque `Uₙ` est un **saut à effectuer** à partir de la **position précédente**
-     - Exemple : `U₁ = 3` → on saute 3 positions depuis le point précédent pour lire le bit
-   - Répéter jusqu’à obtenir un nombre d’indices égal à la **longueur (en bits) du message caché**
+### Paramètres configurables
+- **Identifiant utilisateur** : Base de génération
+- **Coefficients (a, b, m)** : Contrôle de la suite pseudo-aléatoire
+- **Format de sortie** : Texte, binaire, hexadécimal
+- **Niveau de validation** : Basique, avancé, complet
 
 ---
 
-### 🖼️ Partie 2 : Décodage du message dans l’image
+## 🚀 Cas d'usage
 
-1. Utiliser les **indices générés** (par saut)
-2. Lire les **bits cachés dans l’image** (souvent LSB des pixels ou canaux)
-3. Reconstituer le **message binaire**
-4. **Décoder** le message en utilisant la **table de Huffman**
-
----
-
-### 🎧 Partie 3 : Décodage du message dans le son
-
-1. Même procédé que pour l’image :
-   - Utiliser les **indices à saut**
-   - Extraire les bits cachés dans les **échantillons audio**
-   - Reconstituer et décoder le message avec Huffman
+- **Communication sécurisée** via médias publics
+- **Authentification de contenu** numérique
+- **Recherche en cryptographie** et stéganographie
+- **Éducation** en théorie de l'information
+- **Analyse forensique** de médias numériques
 
 ---
 
-## 📌 Récapitulatif technique
+## 📈 Performances
 
-- **Suite utilisée** :
-  ```math
-  U₀ = 1  
-  Uₙ = (a × Uₙ₋₁ + b) mod m
+- **Compression efficace** grâce à Huffman
+- **Extraction rapide** par navigation ciblée
+- **Faible empreinte mémoire** avec traitement par flux
+- **Scalabilité** pour gros volumes de données
+- **Robustesse** face aux modifications mineures du média
+
+---
+
+## 🛡️ Sécurité
+
+- **Dispersion pseudo-aléatoire** des bits cachés
+- **Validation d'intégrité** des messages extraits
+- **Résistance aux analyses** séquentielles
+- **Flexibilité des paramètres** de génération
